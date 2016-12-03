@@ -1,0 +1,70 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Mutiny</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+	<script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="asymmetric.css">
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+	<style type="text/css">
+		body { font-family: 'Inconsolata', monospace; }
+	</style>
+	<script type="text/javascript">
+		$(document).ready(function () {
+    		var $container = $(".grid");
+
+    		$container.imagesLoaded(function () {
+        	$container.masonry();
+    	});
+
+	}); 
+	//http://stackoverflow.com/questions/31992136/jquery-help-initialize-masonry-after-all-images-have-loaded
+
+	</script>
+</head>
+<body>
+
+	<h1>Music/Movies/Books</h1>
+
+	 <div class="grid">
+  <div class="grid-sizer"></div>
+  <div class="grid-item">
+    <img src="test/catcher.jpg" />
+    <span>Catcher on the Rye : A bullshit book about a brat who wants to be James Dean</span>
+  </div>
+  <div class="grid-item">
+    <a href="chat_room.html"><img src="test/lolita.jpg" /></a>
+  </div>
+  <div class="grid-item">
+    <img src="test/21.jpg" />
+  </div>
+  <div class="grid-item">
+    <img src="test/vally.jpg" />
+  </div>
+  <div class="grid-item">
+    <img src="test/coltrane.jpg" />
+  </div>
+  <div class="grid-item">
+    <img src="test/journey.jpg" />
+  </div>
+  <div class="grid-item">
+    <img src="test/deep.jpg" />
+  </div>
+  <div class="grid-item">
+    <img src="test/waves.jpeg" />
+  </div>
+  <div class="grid-item">
+    <img src="test/dummy.jpg" />
+  </div>
+</div>
+
+  
+
+    </div>
+
+
+
+</body>
+</html>

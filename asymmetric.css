@@ -23,6 +23,7 @@ html { overflow-y: scroll; }
 .grid-sizer,
 .grid-item {
   width: 33.333%;
+  margin-bottom: 25px;
 }
 
 .grid-item {

@@ -6,20 +6,62 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 	<script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
+
+	<script src="vex-master/dist/js/vex.combined.min.js"></script>
+	<script>vex.defaultOptions.className = 'vex-theme-os'</script>
+	<link rel="stylesheet" href="vex-master/dist/css/vex.css" />
+	<link rel="stylesheet" href="vex-master/dist/css/vex-theme-os.css" />
+
 	<link rel="stylesheet" type="text/css" href="asymmetric.css">
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+	
 	<style type="text/css">
 		body { font-family: 'Inconsolata', monospace; }
+
+		div.container {
+ 			text-align: center;
+  			padding: 10px 20px;
+		}
+
 	</style>
+
 	<script type="text/javascript">
 		$(document).ready(function () {
     		var $container = $(".grid");
 
-    		$container.imagesLoaded(function () {
-        	$container.masonry();
-    	});
+    			$container.imagesLoaded(function () {
+        		$container.masonry();
+    		});
 
-	}); 
+    		$("#chat-element").click(function(){
+    			vex.dialog.open({
+				    message: 'Catcher on the Rye : A bullshit book about a brat who wants to be James Dean',
+				    input: [
+				    	'<ul>',
+						    '<li>',
+						      '<div>',
+						        '<ul></ul>',
+						      '</div>',
+						      '<input placeholder="Type here..."/>',
+						    '</li>',
+						    '<li>',
+						      '<div>',
+						        '<h3>Pick a nickname?</h3>',
+						        '<input type="text" maxlength="14" />',
+						      '</div>',
+						    '</li>',
+						  '</ul>',
+						  '<script src="/socket.io/socket.io.js"></script>',
+						  '<script src="socket.io/main.js"></script>'
+
+				    ].join('')
+				})
+    		});	
+    		
+		}); 
+
+
+
 	//http://stackoverflow.com/questions/31992136/jquery-help-initialize-masonry-after-all-images-have-loaded
 
 	</script>
@@ -29,36 +71,56 @@
 	<h1>Music/Movies/Books</h1>
 
 	 <div class="grid">
-  <div class="grid-sizer"></div>
-  <div class="grid-item">
-    <img src="test/catcher.jpg" />
-    <span>Catcher on the Rye : A bullshit book about a brat who wants to be James Dean</span>
-  </div>
-  <div class="grid-item">
-    <a href="chat_room.html"><img src="test/lolita.jpg" /></a>
-  </div>
-  <div class="grid-item">
-    <img src="test/21.jpg" />
-  </div>
-  <div class="grid-item">
-    <img src="test/vally.jpg" />
-  </div>
-  <div class="grid-item">
-    <img src="test/coltrane.jpg" />
-  </div>
-  <div class="grid-item">
-    <img src="test/journey.jpg" />
-  </div>
-  <div class="grid-item">
-    <img src="test/deep.jpg" />
-  </div>
-  <div class="grid-item">
-    <img src="test/waves.jpeg" />
-  </div>
-  <div class="grid-item">
-    <img src="test/dummy.jpg" />
-  </div>
-</div>
+		  <div class="grid-sizer"></div>
+		  <div class="grid-item">
+		    <img src="test/catcher.jpg" />
+		    <div class="container">
+		    	<p id="chat-element">Catcher on the Rye : A bullshit book about a brat who wants to be James Dean</p>
+		  	</div>
+		  </div>
+
+		  <div class="grid-item">
+		    <img src="test/lolita.jpg" />
+		    <div class="container">
+		    	<p>Dear Sex Offender...</p>
+		  	</div>
+		  </div>
+
+		  <div class="grid-item">
+		    <img src="test/21.jpg" />
+		    <div class="container">
+		    	<p>Naomi Watts on heavy anti-depressants</p>
+		  	</div>
+		  </div>
+
+		  <div class="grid-item">
+		    <img src="test/vally.jpg" />
+		    <div class="container">
+		    	<p>Sexiest band alive</p>
+		  	</div>
+		  </div>
+
+		  <div class="grid-item">
+		    <img src="test/coltrane.jpg" />
+		  </div>
+
+		  <div class="grid-item">
+		    <img src="test/journey.jpg" />
+		  </div>
+
+		  <div class="grid-item">
+		    <img src="test/deep.jpg" />
+		  </div>
+
+		  <div class="grid-item">
+		    <img src="test/waves.jpeg" />
+		  </div>
+
+		  <div class="grid-item">
+		    <img src="test/dummy.jpg" />
+		  </div>
+
+		</div>
 
   
 

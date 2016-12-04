@@ -22,12 +22,17 @@ html { overflow-y: scroll; }
 
 .grid-sizer,
 .grid-item {
-  width: 33.333%;
-  margin-bottom: 25px;
+  width: 25%;
+  margin:0 auto;
+
+  /*margin-bottom: 5px;*/
 }
 
 .grid-item {
   float: left;
+  border-style: solid;
+	border-width: 1px;
+	border-radius: 25px;
 }
 
 .grid-item img {

@@ -1,0 +1,80 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Select your categories of preference...</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+	<style type="text/css">
+		body{
+			font-family: 'Inconsolata', monospace;
+		}
+
+		img{
+			width: 100%;
+			border-radius: 20px;
+		}
+	</style>
+
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+
+			$("#movies").click(function(){
+				$("#selected_movies").toggle();
+			});
+
+			$("#music").click(function(){
+				$("#selected_music").toggle();
+			});
+
+			$("#books").click(function(){
+				$("#selected_books").toggle();
+			});
+		});
+	</script>
+
+</head>
+<body>
+
+	<div class="row text-center">
+		<div class="col-md-12">
+			<h1>Select your cup of tea...</h1>
+		</div>
+	</div>
+
+	<div class="row text-center">
+		<div class="col-md-3 col-md-offset-1">
+			<h4>Music</h4>
+			<img id="music" src="categories/music.jpg">
+		</div>
+		<div class="col-md-3">
+			<h4>Movies</h4>
+			<img id="movies" src="categories/films.gif">
+		</div>
+		<div class="col-md-3">
+			<h4>Books</h4>
+			<img id="books" src="categories/books.gif">
+		</div>
+	</div>
+
+	<div class="row text-center">
+		<p style="padding-top: 25px;">You can select one or more categories...</p>
+		<div class="col-md-12">
+			<p style="display: none;" id="selected_movies">Movies</p>
+			<p style="display: none;" id="selected_music">Music</p>
+			<p style="display: none;" id="selected_books">Books</p>
+		</div>
+	</div>
+
+	<div class="row text-center">
+		<div class="col-md-12">
+			<a href="main.html" type="button" class="btn btn-success">Mutiny</a>
+		</div>
+	</div>
+
+</body>
+</html>

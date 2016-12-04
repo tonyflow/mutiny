@@ -20,7 +20,11 @@
 
 		div.container {
  			text-align: center;
-  			padding: 10px 20px;
+  			padding: 10px 5px;
+		}
+
+		#new_post:hover,#new_friend:hover{
+			cursor: pointer;
 		}
 
 	</style>
@@ -31,30 +35,72 @@
 
     			$container.imagesLoaded(function () {
         		$container.masonry();
+        		isFitWidth: true;
+    		});
+
+    		$("#new_friend").click(function(){
+
+    			vex.dialog.prompt({
+    				message: 'Type in the name of your friend',
+    				placeholder: 'friend',
+    				callback: function(friend){
+    					console.log(friend);
+    				}
+    			});
+    			
+    		});
+
+    		$("#new_post").click(function(){
+    			vex.dialog.open({
+    				input:['<h3>New post</h3>',
+    						'<form>',
+    						'<input type="radio" name="category" value="music"> Music <br>',
+    						'<input type="radio" name="category" value="movies"> Movies <br>',
+    						'<input type="radio" name="category" value="music"> Books <br>',
+    						'</form>',
+    				].join(''),
+    				buttons: [
+				        $.extend({}, vex.dialog.buttons.YES, { text: 'Next' }),
+				        $.extend({}, vex.dialog.buttons.NO, { text: 'Cancel' })
+				    ],
+				    callback: function(data){
+				    	if (data) {
+				    		vex.dialog.open({
+				    			input:'<p>You chose to create a '+data.category+' post</p>'
+				    		});
+				    	};
+				    	
+				    }
+    			});
     		});
 
     		$("#chat-element").click(function(){
-    			vex.dialog.open({
+
+    			vex.dialog.buttons.YES.text = 'Chat';
+    			vex.dialog.buttons.NO.text = 'Continue Browsing';
+
+    			vex.dialog.confirm({
 				    message: 'Catcher on the Rye : A bullshit book about a brat who wants to be James Dean',
 				    input: [
+				    	'<h3>Participants</h3>',
 				    	'<ul>',
-						    '<li>',
-						      '<div>',
-						        '<ul></ul>',
-						      '</div>',
-						      '<input placeholder="Type here..."/>',
-						    '</li>',
-						    '<li>',
-						      '<div>',
-						        '<h3>Pick a nickname?</h3>',
-						        '<input type="text" maxlength="14" />',
-						      '</div>',
-						    '</li>',
-						  '</ul>',
-						  '<script src="/socket.io/socket.io.js"></script>',
-						  '<script src="socket.io/main.js"></script>'
-
-				    ].join('')
+				    		'<li>Nikos Strongioglou</li>',
+				    		'<li>Pinelopi Kouleri</li>',
+				    		'<li>Thanasis Bambakakis</li>',
+				    		'<li>Angeliki Soule</li>',
+				    	'</ul>',
+				    	'<h5>Latest Messages</h5>',
+				    	'<ul>',
+				    		'<li style="font-size: 15px">Niko: Worst so called masterpiece ever</li>',
+				    		'<li style="font-size: 15px">Pinelopi: No Way</li>',
+				    	'</ul>',
+				    ].join(''),
+				    callback: function(value) {
+				    	console.log(value);
+				    	if (value) {
+				    		window.location.href = "http://localhost:3000";
+				    	};
+				    }
 				})
     		});	
     		
@@ -68,7 +114,9 @@
 </head>
 <body>
 
-	<h1>Music/Movies/Books</h1>
+	<h1>Music / Movies / Books</h1>
+
+	<h3> <span id="new_post"> New Post </span> / <span id="new_friend"> New Friend </span> </h3>
 
 	 <div class="grid">
 		  <div class="grid-sizer"></div>
@@ -102,22 +150,37 @@
 
 		  <div class="grid-item">
 		    <img src="test/coltrane.jpg" />
+		    <div class="container">
+		    	<p>The greatest of them all</p>
+		  	</div>
 		  </div>
 
 		  <div class="grid-item">
 		    <img src="test/journey.jpg" />
+		    <div class="container">
+		    	<p>Mid-war Paris and shit</p>
+		  	</div>
 		  </div>
 
 		  <div class="grid-item">
 		    <img src="test/deep.jpg" />
+		    <div class="container">
+		    	<p>A German guy from Phili</p>
+		  	</div>
 		  </div>
 
 		  <div class="grid-item">
 		    <img src="test/waves.jpeg" />
+		    <div class="container">
+		    	<p>The lady has some serious carnal commitment problems</p>
+		  	</div>
 		  </div>
 
 		  <div class="grid-item">
 		    <img src="test/dummy.jpg" />
+		    <div class="container">
+		    	<p>Shut up and trip on</p>
+		  	</div>
 		  </div>
 
 		</div>

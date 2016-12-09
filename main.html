@@ -1,7 +1,8 @@
-<!DOCTYPE>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<title>Mutiny</title>
+	<meta charset="UTF-8">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
@@ -30,7 +31,27 @@
 	</style>
 
 	<script type="text/javascript">
+
+		function getCookie(cname) {
+			console.log(document.cookie);
+			var name = cname + "=";
+			var ca = document.cookie.split(';');
+			for(var i = 0; i <ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0)==' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length,c.length);
+				}
+			}
+			return "";
+		}
+
 		$(document).ready(function () {
+
+			document.cookie="username=Strongioglou;";
+
     		var $container = $(".grid");
 
     			$container.imagesLoaded(function () {
@@ -51,22 +72,35 @@
     		});
 
     		$("#new_post").click(function(){
+
+				vex.dialog.buttons.YES.text = 'Next';
+    			vex.dialog.buttons.NO.text = 'Cancel';
+
     			vex.dialog.open({
     				input:['<h3>New post</h3>',
-    						'<form>',
-    						'<input type="radio" name="category" value="music"> Music <br>',
-    						'<input type="radio" name="category" value="movies"> Movies <br>',
-    						'<input type="radio" name="category" value="music"> Books <br>',
-    						'</form>',
+    						'<input name="category" type="radio" value="music" checked> Music <br>',
+    						'<input name="category" type="radio" value="movies"> Movies <br>',
+    						'<input name="category" type="radio" value="music"> Books <br>',
     				].join(''),
-    				buttons: [
-				        $.extend({}, vex.dialog.buttons.YES, { text: 'Next' }),
-				        $.extend({}, vex.dialog.buttons.NO, { text: 'Cancel' })
-				    ],
 				    callback: function(data){
 				    	if (data) {
 				    		vex.dialog.open({
-				    			input:'<p>You chose to create a '+data.category+' post</p>'
+				    			input:['<p>You chose to create a '+data.category+' post</p>',
+				    				'<input type="text" name="artist" placeholder="Artist name"><br>',
+				    				'<input type="text" name="album" placeholder="Album"><br>',
+				    				'<input type="text" name="description" placeholder="Add a short description "><br>',
+				    				'<p>OR:</p>',
+				    				'<input type="text" name="link" placeholder="Add AllMusic Link"><br>',
+				    			].join(''),
+				    			callback: function(data){
+									
+									vex.dialog.buttons.YES.text = 'Kaboom Ya!';
+
+				    				console.log(data);
+				    				vex.dialog.alert('Post succesfully created');
+				    				//actual call to backend for
+				    				//data persistence
+				    			}
 				    		});
 				    	};
 				    	
@@ -90,15 +124,20 @@
 				    		'<li>Angeliki Soule</li>',
 				    	'</ul>',
 				    	'<h5>Latest Messages</h5>',
+				    	'<input type="text" style="display: none;" name="post_id" value="'+this.title+'">',
 				    	'<ul>',
 				    		'<li style="font-size: 15px">Niko: Worst so called masterpiece ever</li>',
 				    		'<li style="font-size: 15px">Pinelopi: No Way</li>',
 				    	'</ul>',
 				    ].join(''),
 				    callback: function(value) {
-				    	console.log(value);
+				    	console.log(value.post_id);
 				    	if (value) {
-				    		window.location.href = "http://localhost:3000";
+				    		window.location.href = "http://10.9.41.76:8001/chat_room?" +
+									"username="+getCookie('username')+
+									"&post_id=1234" +
+									"&post_name=Catcher On The Rye" +
+									"&description=What a wonderful movie this is ";
 				    	};
 				    }
 				})
@@ -114,6 +153,9 @@
 </head>
 <body>
 
+	<script>
+
+	</script>
 	<h1>Music / Movies / Books</h1>
 
 	<h3> <span id="new_post"> New Post </span> / <span id="new_friend"> New Friend </span> </h3>
@@ -123,7 +165,7 @@
 		  <div class="grid-item">
 		    <img src="test/catcher.jpg" />
 		    <div class="container">
-		    	<p id="chat-element">Catcher on the Rye : A bullshit book about a brat who wants to be James Dean</p>
+		    	<p id="chat-element" title="CatcherPost">Catcher on the Rye : A bullshit book about a brat who wants to be James Dean</p>
 		  	</div>
 		  </div>
 

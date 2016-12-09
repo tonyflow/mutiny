@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>This is a very shitty chatroom</title>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+    <!--  <script src="http://localhost:8001/socket.io/socket.io.js">  -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+    <style type="text/css">
+        body { font-family: 'Inconsolata', monospace; }
+    </style>
+
+
+        </head>
+<body>
+    <script>
+        var socket = io.connect();
+        var username;
+        socket.on('chat_room_info',function (data) {
+            console.log(data);
+            $('#chat_title').text(data.post_name);
+            $('#description').text(data.description);
+            username=data.username;
+        });
+
+
+        socket.on('new_message_produced',function (data) {
+            console.log(data.text);
+            $('.messages').append('<li type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"><strong>'+data.username+'</strong> : '+data.text+'</li>');
+        });
+
+        socket.on('create_overview',function (data) {
+            console.log(data);
+            $('#synopsis').text(data.synopsis);
+            $('#overview_image').attr('src',data.image);
+
+        });
+
+        $(document).ready(function () {
+
+            var new_message = $('#client_data');
+
+            $(window).keydown(function (event) {
+               if(event.which==13){
+                   sendMessage();
+                   cleanInput();
+               }
+            });
+
+            function cleanInput() {
+                $('#client_data').val('');
+
+            }
+
+            function sendMessage() {
+                console.log(new_message.val());
+
+                $('.messages').append('<li id="'+
+                        guid()+
+                        '"><strong type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">'+
+                        username+
+                        '</strong> : '+
+                        new_message.val()+
+                        '</li>');
+
+                socket.emit('client_data',{'chat_message':new_message.val(),
+                                            'username':username
+                                        });
+            }
+
+            function guid() {
+                function s4() {
+                    return Math.floor((1 + Math.random()) * 0x10000)
+                            .toString(16)
+                            .substring(1);
+                }
+                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                        s4() + '-' + s4() + s4() + s4();
+            }
+
+
+            $('#go_private').click(function () {
+                window.location.replace('private_chat.html');
+            });
+
+
+        });
+    </script>
+
+    <div class="row">
+        <div class="col-md-5 col-md-offset-1">
+            <h1 id="chat_title"></h1>
+            <h5 id="description"></h5>
+
+            <ul style="list-style-type:none" class="messages" >
+
+
+            </ul>
+
+            <input id="client_data" type="text" name="new_message" placeholder="type your message here">
+        </div>
+
+        <div class="col-md-4">
+
+            <h2>Synopsis</h2>
+            <p id="synopsis">this is a truthfully wonderful synopsis</p>
+            <img id="overview_image" src="" alt="">
+        </div>
+
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Go private!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Would you like to do private with user </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="go_private" type="button" class="btn btn-default" data-dismiss="modal">Go!</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

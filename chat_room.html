@@ -38,13 +38,16 @@
             $('#description').text(data.description);
             username=data.username;
             post_id=data.post_id;
+
+            socket.on('new_message_produced_'+post_id,function (data) {
+                console.log(data.text);
+                $('.messages').append('<li data-toggle="modal" data-target="#myModal"><strong  type="button" class="btn btn-info btn-lg">'+data.username+'</strong> : '+data.text+'</li>');
+            });
+
         });
 
 
-        socket.on('new_message_produced',function (data) {
-            console.log(data.text);
-            $('.messages').append('<li data-toggle="modal" data-target="#myModal"><strong  type="button" class="btn btn-info btn-lg">'+data.username+'</strong> : '+data.text+'</li>');
-        });
+
 
         socket.on('create_overview',function (data) {
             console.log(data);
@@ -81,7 +84,8 @@
                         '</li>');
 
                 socket.emit('client_data',{'chat_message':new_message.val(),
-                                            'username':username
+                                            'username':username,
+                                            'post_id':post_id
                                         });
             }
 

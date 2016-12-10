@@ -9,7 +9,7 @@ var app = angular.module('mutiny', []);
         });
     });
 
-
+//http://stackoverflow.com/questions/15415705/angularjs-access-to-dom-element-inside-ng-repeat
 
 app.directive('nop', function(){
     return {
@@ -17,12 +17,14 @@ app.directive('nop', function(){
             console.log('eee', elm, arguments);
             elm.click(function(){
 
+                var title = elm.attr('title');
+
                 vex.dialog.buttons.YES.text = 'Chat';
                 vex.dialog.buttons.NO.text = 'Continue Browsing';
 
                 vex.dialog.confirm({
-                    message: 'Catcher on the Rye : A bullshit book about a brat who wants to be James Dean',
                     input: [
+                        '<h1>title</h1>',
                         '<h3>Participants</h3>',
                         '<ul>',
                         '<li>Nikos Strongioglou</li>',

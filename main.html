@@ -32,6 +32,10 @@
 
 	<script type="text/javascript">
 
+		document.cookie="username=Strongioglou;";
+		document.cookie="accountId=1;";
+		console.log(document.cookie);
+
 		function getCookie(cname) {
 			console.log(document.cookie);
 			var name = cname + "=";
@@ -49,8 +53,6 @@
 		}
 
 		$(document).ready(function () {
-
-			document.cookie="username=Strongioglou;";
 
     		var $container = $(".grid");
 
@@ -93,6 +95,27 @@
 				    				'<input type="text" name="link" placeholder="Add AllMusic Link"><br>',
 				    			].join(''),
 				    			callback: function(data){
+
+									var req='{"accountId" : '+ getCookie('accountId')+
+											',"category" : "music",' +
+											'"albumName" : "'+ data.album +
+											'","artist" : "'+ data.artist +'"}';
+
+									console.log(req);
+
+									jQuery.ajax({
+										'type': 'POST',
+										'url': 'http://10.16.4.153:8080/post',
+										'contentType': 'application/json',
+										'data': req,
+										'dataType': 'json'
+									});
+
+//									$.post('http://10.16.4.153:8080/post',
+//											'{"accountId" : 1,"category" : "music","albumName" : "coda","artist" : "Led Zeppelin"}',
+//											{'Content-Type':'application/json'},
+//
+//									);
 									
 									vex.dialog.buttons.YES.text = 'Kaboom Ya!';
 
@@ -108,7 +131,7 @@
     			});
     		});
 
-    		$("#chat-element").click(function(){
+    		$(".chat-element").click(function(){
 
     			vex.dialog.buttons.YES.text = 'Chat';
     			vex.dialog.buttons.NO.text = 'Continue Browsing';
@@ -124,20 +147,23 @@
 				    		'<li>Angeliki Soule</li>',
 				    	'</ul>',
 				    	'<h5>Latest Messages</h5>',
-				    	'<input type="text" style="display: none;" name="post_id" value="'+this.title+'">',
+				    	'<input type="text" style="display: none;" name="post_name" value="'+this.title+'">',
+						'<input type="text" style="display: none;" name="description" value="'+this.text+'">',
+						'<input type="text" style="display: none;" name="post_id" value="'+this.id+'">',
 				    	'<ul>',
 				    		'<li style="font-size: 15px">Niko: Worst so called masterpiece ever</li>',
 				    		'<li style="font-size: 15px">Pinelopi: No Way</li>',
 				    	'</ul>',
 				    ].join(''),
 				    callback: function(value) {
-				    	console.log(value.post_id);
+				    	console.log(value.post_name);
+						console.log(value.post_id);
 				    	if (value) {
 				    		window.location.href = "http://10.9.41.76:8001/chat_room?" +
 									"username="+getCookie('username')+
-									"&post_id=1234" +
-									"&post_name=Catcher On The Rye" +
-									"&description=What a wonderful movie this is ";
+									"&post_id=" +value.post_id+
+									"&post_name=" +value.post_name+
+									"&description="+value.description;
 				    	};
 				    }
 				})
@@ -165,7 +191,7 @@
 		  <div class="grid-item">
 		    <img src="test/catcher.jpg" />
 		    <div class="container">
-		    	<p id="chat-element" title="CatcherPost">Catcher on the Rye : A bullshit book about a brat who wants to be James Dean</p>
+		    	<p class="chat-element" id="1234" title="Catcher On The Rye" post_id="1234">Catcher on the Rye : A bullshit book about a brat who wants to be James Dean</p>
 		  	</div>
 		  </div>
 

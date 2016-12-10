@@ -43,6 +43,22 @@ var server = http.createServer(function(request,response){
                 response.write('Fuck off and die kind of type');
                 response.end();
                 break;
+            case '/private_chat':
+                fs.readFile(__dirname+path+'.html',function (error, data) {
+
+                    getSynopsis();
+
+                    var body=data.toString();
+                    var updated_body=body.replace('url("")','url("'+image+'")');
+                    console.log(updated_body);
+                    // data.replace('url("")','url("'+image+'")');
+
+                    response.writeHeader(200,{'Content-Type':'text/html'});
+                    response.write(updated_body);
+                    response.end();
+                });
+                break;
+
             case '/chat_room':
                 fs.readFile(__dirname+path+'.html',function (error, data) {
                    if (error){
@@ -51,27 +67,7 @@ var server = http.createServer(function(request,response){
                        response.end();
                    }else{
 
-                       var options = {
-                           host: '10.9.41.76',
-                           port: 8080,
-                           path: '/getSynopsis?post_id='+post_id,
-                           method: 'GET'
-                       };
-
-                       http.request(options, function(res) {
-                           console.log('STATUS: ' + res.statusCode);
-                           console.log('HEADERS: ' + JSON.stringify(res.headers));
-                           res.setEncoding('utf8');
-                           res.on('data', function (chunk) {
-                               var objResponse =JSON.parse(chunk);
-                               console.log('title: ' + objResponse.title);
-                               console.log('synopsis: ' + objResponse.synopsis);
-                               console.log('image: ' + objResponse.image);
-                               title=objResponse.title;
-                               synopsis=objResponse.synopsis;
-                               image=objResponse.image;
-                           });
-                       }).end();
+                       getSynopsis();
 
                        response.writeHeader(200,{'Content-Type':'text/html'});
                        response.write(data,"utf-8");
@@ -85,6 +81,31 @@ var server = http.createServer(function(request,response){
                 response.write("opps this doesn't exist - 404");
                 response.end();
                 break;
+        }
+
+        function getSynopsis() {
+            var options = {
+                host: '10.9.41.76',
+                port: 8080,
+                path: '/getSynopsis?post_id='+post_id,
+                method: 'GET'
+            };
+
+            http.request(options, function(res) {
+                console.log('STATUS: ' + res.statusCode);
+                console.log('HEADERS: ' + JSON.stringify(res.headers));
+                res.setEncoding('utf8');
+                res.on('data', function (chunk) {
+                    var objResponse =JSON.parse(chunk);
+                    console.log('title: ' + objResponse.title);
+                    console.log('synopsis: ' + objResponse.synopsis);
+                    console.log('image: ' + objResponse.image);
+                    console.log('===================================');
+                    title=objResponse.title;
+                    synopsis=objResponse.synopsis;
+                    image=objResponse.image;
+                });
+            }).end();
         }
 
 
@@ -117,6 +138,8 @@ listener.sockets.on('connection',function (socket) {
                                                     'username':data.username
                                 });
     });
+
+
 
 
 });

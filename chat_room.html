@@ -17,19 +17,27 @@
 
     <style type="text/css">
         body { font-family: 'Inconsolata', monospace; }
+
+        img{
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 20px;
+        }
     </style>
 
 
-        </head>
+</head>
 <body>
     <script>
         var socket = io.connect();
         var username;
+        var post_id;
         socket.on('chat_room_info',function (data) {
             console.log(data);
             $('#chat_title').text(data.post_name);
             $('#description').text(data.description);
             username=data.username;
+            post_id=data.post_id;
         });
 
 
@@ -89,7 +97,7 @@
 
 
             $('#go_private').click(function () {
-                window.location.replace('private_chat.html');
+                window.location.replace('private_chat?post_id='+post_id);
             });
 
 

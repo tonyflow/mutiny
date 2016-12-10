@@ -2,9 +2,12 @@
 <html>
 <head>
 	<title>Welcome to Mutiny!!!</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata:700" rel="stylesheet">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 
 	<style type="text/css">
 		body{
@@ -22,21 +25,46 @@
 		}
 	</style>
 </head>
-<body>
+<body ng-app="app" ng-controller="home as home">
 
-	<div class="row">
-		<div class="col-md-12 text-center footer">
-				
+<div class="row">
+	<div class="col-md-12 text-center footer">
+		<h4>This is the place where colours happen, login with : </h4>
+		<a href="http://10.16.4.153:8080/login"><img src="Facebook.png"></a>
 
-			<h4>This is the place where colours happen, login with : </h4>
-			<a href="main.html"><img src="Facebook.png"></a>
-			
-			<a href="categories.html"><img src="Github.png"></a>
-			<img src="Instagram.png">
-			<img src="Google.png">
-
-		</div>
+		<a href="categories.html"><img src="Github.png"></a>
+		<img src="Instagram.png">
+		<img src="Google.png">
 	</div>
+</div>
 
+<script type="text/javascript">
+	angular
+			.module("app", [])
+			.config(
+					function ($httpProvider) {
+						$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+					}).controller("home", function ($http, $location) {
+		var self = this;
+		$http.get("http://10.16.4.153:8080/user").success(function (data) {
+			self.user = data.userAuthentication.details.name;
+			self.authenticated = true;
+			window.location.href = '/main.html';
+		}).error(function () {
+			self.user = "N/A";
+			self.authenticated = false;
+		});
+		self.logout = function () {
+			$http.post('http://10.16.4.153:8080/logout', {}).success(function () {
+				self.authenticated = false;
+				console.info("false");
+				$location.path("/");
+			}).error(function (data) {
+				console.log("Logout failed")
+				self.authenticated = false;
+			});
+		};
+	});
+</script>
 </body>
 </html>

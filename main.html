@@ -170,12 +170,16 @@
                 <div >
                     <img  ng-if={{post.category.name=='music'}} src="{{post.album.image[0].imageUrl}}"/>
                     <img  ng-if={{post.category.name=='movies'}} src="{{post.results[0].poster_path}}"/>
+					<img ng-if={{post.category.name=='books'}} src="{{post.items[0].volumeInfo.imageLinks.thumbnail}}"/>
                 </div>
 
 				<div class="container" >
 					<p  ng-if={{post.category.name=='music'}} id="{{post.id}}" title="{{post.album.name}}" nop>{{post.album.name}} by {{post.album.artist}}</p>
-					<p  ng-if={{post.category.name=='movies'}} id="{{post.id}}" title="{{post.results[0].original_title}}" nop>
+					<p ng-if={{post.category.name=='movies'}} id="{{post.id}}" title="{{post.results[0].original_title}}" nop>
 						{{post.results[0].original_title}}</p>
+					<p ng-if={{post.category.name=='books'}} id="{{post.id}}" title="{{post.items[0].volumeInfo.title}}" nop>{{post.items[0].volumeInfo.title}}
+						by {{post.items[0].volumeInfo.authors[0]}}</p>
+
 				</div>
 			</div>
 		</div>

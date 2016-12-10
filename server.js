@@ -85,9 +85,9 @@ var server = http.createServer(function(request,response){
 
         function getSynopsis() {
             var options = {
-                host: '10.9.41.76',
+                host: '10.16.4.153',
                 port: 8080,
-                path: '/getSynopsis?post_id='+post_id,
+                path: '/post/'+post_id,
                 method: 'GET'
             };
 
@@ -97,13 +97,30 @@ var server = http.createServer(function(request,response){
                 res.setEncoding('utf8');
                 res.on('data', function (chunk) {
                     var objResponse =JSON.parse(chunk);
+
+                    if (objResponse.category.name=='music'){
+                        image=objResponse.album.image[0].imageUrl;
+                        title=objResponse.album.name;
+                        synopsis=objResponse.description;
+
+                    }else if(objResponse.category.name=='movies'){
+
+                        title=objResponse.results[0].overview.otiginalTitle;
+                        image=objResponse.results[0].poster_path;
+                        synopsis=objResponse.results[0].overview;
+
+                    }else if(objResponse.category.name=='books'){
+
+                    }
+
                     console.log('title: ' + objResponse.title);
                     console.log('synopsis: ' + objResponse.synopsis);
                     console.log('image: ' + objResponse.image);
                     console.log('===================================');
-                    title=objResponse.title;
-                    synopsis=objResponse.synopsis;
-                    image=objResponse.image;
+
+
+
+
                 });
             }).end();
         }

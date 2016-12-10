@@ -43,7 +43,7 @@
 
         socket.on('new_message_produced',function (data) {
             console.log(data.text);
-            $('.messages').append('<li type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"><strong>'+data.username+'</strong> : '+data.text+'</li>');
+            $('.messages').append('<li data-toggle="modal" data-target="#myModal"><strong  type="button" class="btn btn-info btn-lg">'+data.username+'</strong> : '+data.text+'</li>');
         });
 
         socket.on('create_overview',function (data) {
@@ -117,11 +117,19 @@
             <input id="client_data" type="text" name="new_message" placeholder="type your message here">
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
 
             <h2>Synopsis</h2>
             <p id="synopsis">this is a truthfully wonderful synopsis</p>
             <img id="overview_image" src="" alt="">
+        </div>
+        
+        <div class="col-md-2">
+            <a href="http://10.9.41.76/~niko.strongioglou/mutiny/main.html" type="button">
+
+                <h3>Back to Feed</h3>
+
+            </a>
         </div>
 
         <div id="myModal" class="modal fade" role="dialog">

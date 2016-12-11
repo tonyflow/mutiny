@@ -84,6 +84,9 @@ var server = http.createServer(function(request,response){
         }
 
         function getSynopsis() {
+
+            console.log('Requesting data for post :: '+post_id);
+
             var options = {
                 host: '10.16.4.153',
                 port: 8080,
@@ -98,6 +101,8 @@ var server = http.createServer(function(request,response){
                 res.on('data', function (chunk) {
                     var objResponse =JSON.parse(chunk);
 
+                    console.log(objResponse.category.name);
+
                     if (objResponse.category.name=='music'){
                         image=objResponse.album.image[0].imageUrl;
                         title=objResponse.album.name;
@@ -105,7 +110,7 @@ var server = http.createServer(function(request,response){
 
                     }else if(objResponse.category.name=='movies'){
 
-                        title=objResponse.results[0].overview.otiginalTitle;
+                        title=objResponse.results[0].overview.original_title;
                         image=objResponse.results[0].poster_path;
                         synopsis=objResponse.results[0].overview;
 
@@ -151,12 +156,14 @@ listener.sockets.on('connection',function (socket) {
 
     socket.on('client_data',function (data) {
        process.stdout.write(data.chat_message);
-       socket.broadcast.emit('new_message_produced',{'text':data.chat_message,
+        process.stdout.write('new_message_produced_'+post_id);
+        process.stdout.write(data.username);
+
+
+
+       socket.broadcast.emit('new_message_produced_'+data.post_id,{'text':data.chat_message,
                                                     'username':data.username
                                 });
     });
-
-
-
 
 });

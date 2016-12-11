@@ -32,19 +32,34 @@
         var socket = io.connect();
         var username;
         var post_id;
+
+        var other_user_for_private_chat;
         socket.on('chat_room_info',function (data) {
             console.log(data);
             $('#chat_title').text(data.post_name);
             $('#description').text(data.description);
             username=data.username;
             post_id=data.post_id;
+
+            socket.on('go_private_'+username,function (data) {
+
+
+                window.location.replace('private_chat?createdBy='+username+'' +
+                        '&for='+post_id+
+                        '&with='+'other'
+                );
+
+            });
+
+            socket.on('new_message_produced_'+post_id,function (data) {
+                console.log(data.text);
+                $('.messages').append('<li data-toggle="modal" data-target="#myModal"><strong  type="button" class="btn btn-info btn-md">'+data.username+'</strong> : '+data.text+'</li>');
+            });
+
         });
 
 
-        socket.on('new_message_produced',function (data) {
-            console.log(data.text);
-            $('.messages').append('<li data-toggle="modal" data-target="#myModal"><strong  type="button" class="btn btn-info btn-lg">'+data.username+'</strong> : '+data.text+'</li>');
-        });
+
 
         socket.on('create_overview',function (data) {
             console.log(data);
@@ -54,6 +69,14 @@
         });
 
         $(document).ready(function () {
+
+            $(document).on('click','.btn.btn-info.btn-md',function(){
+                var other = $(this);
+                console.log(other.text());
+                other_user_for_private_chat=other.text();
+            });
+
+
 
             var new_message = $('#client_data');
 
@@ -74,14 +97,15 @@
 
                 $('.messages').append('<li id="'+
                         guid()+
-                        '"><strong type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">'+
+                        '"><span id="malakia" type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">'+
                         username+
-                        '</strong> : '+
+                        '</span> : '+
                         new_message.val()+
                         '</li>');
 
                 socket.emit('client_data',{'chat_message':new_message.val(),
-                                            'username':username
+                                            'username':username,
+                                            'post_id':post_id
                                         });
             }
 
@@ -97,7 +121,14 @@
 
 
             $('#go_private').click(function () {
-                window.location.replace('private_chat?post_id='+post_id);
+                socket.emit('enter_private_chat',{'createdBy':username,
+                                                'for':post_id,
+                                                'with':other_user_for_private_chat
+                });
+                window.location.replace('private_chat?createdBy='+username+'' +
+                        '&for='+post_id+
+                        '&with='+'other'
+                );
             });
 
 

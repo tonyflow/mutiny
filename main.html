@@ -39,9 +39,8 @@
 
     <script type="text/javascript">
 
-        document.cookie = "username=Strongioglou;";
-        document.cookie = "accountId=1;";
-        console.log(document.cookie);
+		document.cookie="accountId=1;";
+		console.log(document.cookie);
 
         function getCookie(cname) {
             console.log(document.cookie);
@@ -174,11 +173,11 @@
             </div>
 
             <div class="container">
-                <p ng-if={{post.category.name=='music'}} id="{{post.id}}" title="{{post.album.name}}" nop>{{post.album.name}} by {{post.album.artist}}</p>
+                <p ng-if={{post.category.name=='music'}} id="{{post.id}}" title="{{post.album.name}}" nop>{{post.album.name}}  {{post.album.artist}}</p>
                 <p ng-if={{post.category.name=='movies'}} id="{{post.id}}" title="{{post.results[0].original_title}}" nop>
                     {{post.results[0].original_title}}</p>
                 <p ng-if={{post.category.name=='books'}} id="{{post.id}}" title="{{post.items[0].volumeInfo.title}}" nop>{{post.items[0].volumeInfo.title}}
-                    by {{post.items[0].volumeInfo.authors[0]}}</p>
+                     {{post.items[0].volumeInfo.authors[0]}}</p>
 
             </div>
         </div>

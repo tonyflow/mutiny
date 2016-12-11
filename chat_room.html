@@ -32,6 +32,8 @@
         var socket = io.connect();
         var username;
         var post_id;
+
+        var other_user_for_private_chat;
         socket.on('chat_room_info',function (data) {
             console.log(data);
             $('#chat_title').text(data.post_name);
@@ -39,9 +41,13 @@
             username=data.username;
             post_id=data.post_id;
 
+            socket.on('go_private_'+username,function (data) {
+                window.location.href="";
+            });
+
             socket.on('new_message_produced_'+post_id,function (data) {
                 console.log(data.text);
-                $('.messages').append('<li data-toggle="modal" data-target="#myModal"><strong  type="button" class="btn btn-info btn-lg">'+data.username+'</strong> : '+data.text+'</li>');
+                $('.messages').append('<li data-toggle="modal" data-target="#myModal"><strong  type="button" class="btn btn-info btn-md">'+data.username+'</strong> : '+data.text+'</li>');
             });
 
         });
@@ -57,6 +63,24 @@
         });
 
         $(document).ready(function () {
+
+//            var self=this;
+
+            $('strong.btn.btn-info.btn-md').click(function () {
+                console.log('test log');
+                var other = $(this);
+                console.log(other);
+            });
+
+            $("#myModal").on('show.bs.modal', function(event){
+                // Get button that triggered the modal
+                var button = $(event.relatedTarget);
+                // Extract value from data-* attributes
+                var titleData = button.data('title');
+                console.log(titleData);
+                console.log($(this).innerHTML);
+                $(this).find('.modal-title').text(titleData + ' Form');
+            });
 
             var new_message = $('#client_data');
 
@@ -77,7 +101,7 @@
 
                 $('.messages').append('<li id="'+
                         guid()+
-                        '"><strong type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">'+
+                        '"><strong type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">'+
                         username+
                         '</strong> : '+
                         new_message.val()+
@@ -101,7 +125,14 @@
 
 
             $('#go_private').click(function () {
-                window.location.replace('private_chat?post_id='+post_id);
+                socket.emit('enter_private_chat',{'createdBy':username,
+                                                'for':post_id,
+                                                'with':'other'
+                });
+                window.location.replace('private_chat?createdBy='+username+'' +
+                        '&for='+post_id+
+                        '&with='+'other'
+                );
             });
 
 

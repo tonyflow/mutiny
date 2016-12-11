@@ -84,6 +84,9 @@ var server = http.createServer(function(request,response){
         }
 
         function getSynopsis() {
+
+            console.log('Requesting data for post :: '+post_id);
+
             var options = {
                 host: '10.16.4.153',
                 port: 8080,

@@ -42,7 +42,13 @@
             post_id=data.post_id;
 
             socket.on('go_private_'+username,function (data) {
-                window.location.href="";
+
+
+                window.location.replace('private_chat?createdBy='+username+'' +
+                        '&for='+post_id+
+                        '&with='+'other'
+                );
+
             });
 
             socket.on('new_message_produced_'+post_id,function (data) {
@@ -64,23 +70,13 @@
 
         $(document).ready(function () {
 
-//            var self=this;
-
-            $('strong.btn.btn-info.btn-md').click(function () {
-                console.log('test log');
+            $(document).on('click','.btn.btn-info.btn-md',function(){
                 var other = $(this);
-                console.log(other);
+                console.log(other.text());
+                other_user_for_private_chat=other.text();
             });
 
-            $("#myModal").on('show.bs.modal', function(event){
-                // Get button that triggered the modal
-                var button = $(event.relatedTarget);
-                // Extract value from data-* attributes
-                var titleData = button.data('title');
-                console.log(titleData);
-                console.log($(this).innerHTML);
-                $(this).find('.modal-title').text(titleData + ' Form');
-            });
+
 
             var new_message = $('#client_data');
 
@@ -101,9 +97,9 @@
 
                 $('.messages').append('<li id="'+
                         guid()+
-                        '"><strong type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">'+
+                        '"><span id="malakia" type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">'+
                         username+
-                        '</strong> : '+
+                        '</span> : '+
                         new_message.val()+
                         '</li>');
 
@@ -127,7 +123,7 @@
             $('#go_private').click(function () {
                 socket.emit('enter_private_chat',{'createdBy':username,
                                                 'for':post_id,
-                                                'with':'other'
+                                                'with':other_user_for_private_chat
                 });
                 window.location.replace('private_chat?createdBy='+username+'' +
                         '&for='+post_id+

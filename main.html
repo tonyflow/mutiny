@@ -1,145 +1,146 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="mutiny">
 <head>
-	<title>Mutiny</title>
-	<meta charset="UTF-8">
+    <title>Mutiny</title>
+    <meta charset="UTF-8">
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-	<script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
-	<script src="feed.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+    <script src="ng-stomp/ng-stomp.standalone.min.js"></script>
 
-	<script src="vex-master/dist/js/vex.combined.min.js"></script>
-	<script>vex.defaultOptions.className = 'vex-theme-os'</script>
-	<link rel="stylesheet" href="vex-master/dist/css/vex.css" />
-	<link rel="stylesheet" href="vex-master/dist/css/vex-theme-os.css" />
+    <script src="feed.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="asymmetric.css">
-	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <script src="vex-master/dist/js/vex.combined.min.js"></script>
+    <script>vex.defaultOptions.className = 'vex-theme-os'</script>
+    <link rel="stylesheet" href="vex-master/dist/css/vex.css"/>
+    <link rel="stylesheet" href="vex-master/dist/css/vex-theme-os.css"/>
 
-	<style type="text/css">
-		body { font-family: 'Inconsolata', monospace; }
+    <link rel="stylesheet" type="text/css" href="asymmetric.css">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 
-		div.container {
-			text-align: center;
-			padding: 10px 5px;
-		}
+    <style type="text/css">
+        body {
+            font-family: 'Inconsolata', monospace;
+        }
 
-		#new_post:hover,#new_friend:hover{
-			cursor: pointer;
-		}
+        div.container {
+            text-align: center;
+            padding: 10px 5px;
+        }
 
-	</style>
+        #new_post:hover, #new_friend:hover {
+            cursor: pointer;
+        }
 
-	<script type="text/javascript">
+    </style>
 
-		document.cookie="username=Strongioglou;";
-		document.cookie="accountId=1;";
-		console.log(document.cookie);
+    <script type="text/javascript">
 
-		function getCookie(cname) {
-			console.log(document.cookie);
-			var name = cname + "=";
-			var ca = document.cookie.split(';');
-			for(var i = 0; i <ca.length; i++) {
-				var c = ca[i];
-				while (c.charAt(0)==' ') {
-					c = c.substring(1);
-				}
-				if (c.indexOf(name) == 0) {
-					return c.substring(name.length,c.length);
-				}
-			}
-			return "";
-		}
+        document.cookie = "username=Strongioglou;";
+        document.cookie = "accountId=1;";
+        console.log(document.cookie);
 
-		$(document).ready(function () {
+        function getCookie(cname) {
+            console.log(document.cookie);
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
 
-    		var $container = $(".grid");
+        $(document).ready(function () {
 
-			$container.imagesLoaded(function () {
-				$container.masonry();
-				isFitWidth: true;
-			});
+            var $container = $(".grid");
 
-			$("#new_friend").click(function () {
+            $container.imagesLoaded(function () {
+                $container.masonry();
+                isFitWidth: true;
+            });
 
-				vex.dialog.prompt({
-					message: 'Type in the name of your friend',
-					placeholder: 'friend',
-					callback: function (friend) {
-						console.log(friend);
-					}
-				});
+            $("#new_friend").click(function () {
 
-			});
+                vex.dialog.prompt({
+                    message: 'Type in the name of your friend',
+                    placeholder: 'friend',
+                    callback: function (friend) {
+                        console.log(friend);
+                    }
+                });
 
-			$("#new_post").click(function () {
+            });
 
-				vex.dialog.buttons.YES.text = 'Next';
-				vex.dialog.buttons.NO.text = 'Cancel';
+            $("#new_post").click(function () {
 
-    			vex.dialog.open({
-    				input:['<h3>New post</h3>',
-    						'<input name="category" type="radio" value="music" checked> Music <br>',
-    						'<input name="category" type="radio" value="movies"> Movies <br>',
-    						'<input name="category" type="radio" value="music"> Books <br>',
-    				].join(''),
-				    callback: function(data){
-				    	if (data) {
-				    		vex.dialog.open({
-				    			input:['<p>You chose to create a '+data.category+' post</p>',
-				    				'<input type="text" name="artist" placeholder="Artist name"><br>',
-				    				'<input type="text" name="album" placeholder="Album"><br>',
-				    				'<input type="text" name="description" placeholder="Add a short description "><br>',
-				    				'<p>OR:</p>',
-				    				'<input type="text" name="link" placeholder="Add AllMusic Link"><br>',
-				    			].join(''),
-				    			callback: function(data){
+                vex.dialog.buttons.YES.text = 'Next';
+                vex.dialog.buttons.NO.text = 'Cancel';
 
-									var req='{"accountId" : '+ getCookie('accountId')+
-											',"category" : "music",' +
-											'"albumName" : "'+ data.album +
-											'","artist" : "'+ data.artist +'"}';
+                vex.dialog.open({
+                    input: ['<h3>New post</h3>',
+                        '<input name="category" type="radio" value="music" checked> Music <br>',
+                        '<input name="category" type="radio" value="movies"> Movies <br>',
+                        '<input name="category" type="radio" value="music"> Books <br>',
+                    ].join(''),
+                    callback: function (data) {
+                        if (data) {
+                            vex.dialog.open({
+                                input: ['<p>You chose to create a ' + data.category + ' post</p>',
+                                    '<input type="text" name="artist" placeholder="Artist name"><br>',
+                                    '<input type="text" name="album" placeholder="Album"><br>',
+                                    '<input type="text" name="description" placeholder="Add a short description "><br>',
+                                    '<p>OR:</p>',
+                                    '<input type="text" name="link" placeholder="Add AllMusic Link"><br>',
+                                ].join(''),
+                                callback: function (data) {
 
-									console.log(req);
+                                    var req = '{"accountId" : ' + getCookie('accountId') +
+                                            ',"category" : "music",' +
+                                            '"albumName" : "' + data.album +
+                                            '","artist" : "' + data.artist + '"}';
 
-									jQuery.ajax({
-										'type': 'POST',
-										'url': 'http://10.16.4.153:8080/post',
-										'contentType': 'application/json',
-										'data': req,
-										'dataType': 'json'
-									});
+                                    console.log(req);
 
-
-									vex.dialog.buttons.YES.text = 'Kaboom Ya!';
-
-									console.log(data);
-									vex.dialog.alert('Post succesfully created');
-									//actual call to backend for
-									//data persistence
-								}
-							});
-						}
-						;
-
-					}
-				});
-			});
+                                    jQuery.ajax({
+                                        'type': 'POST',
+                                        'url': 'http://10.16.4.153:8080/post',
+                                        'contentType': 'application/json',
+                                        'data': req,
+                                        'dataType': 'json'
+                                    });
 
 
+                                    vex.dialog.buttons.YES.text = 'Kaboom Ya!';
 
-		});
+                                    console.log(data);
+                                    vex.dialog.alert('Post succesfully created');
+                                    //actual call to backend for
+                                    //data persistence
+                                }
+                            });
+                        }
+                        ;
+
+                    }
+                });
+            });
 
 
+        });
 
 
-		//http://stackoverflow.com/questions/31992136/jquery-help-initialize-masonry-after-all-images-have-loaded
+        //http://stackoverflow.com/questions/31992136/jquery-help-initialize-masonry-after-all-images-have-loaded
 
-	</script>
+    </script>
 </head>
 <body>
 
@@ -151,42 +152,39 @@
 <h3><span id="new_post"> New Post </span> / <span id="new_friend"> New Friend </span></h3>
 
 <div class="grid" ng-controller="PostCtrl">
-	<div class="grid-sizer"></div>
+    <div class="grid-sizer"></div>
 
 
+    <!--<div ng-controller="PostCtrl">-->
 
-	<!--<div ng-controller="PostCtrl">-->
 
+    <div ng-repeat="post in posts">
+        <!--<div class="grid-item">-->
+        <!--<img src="test/catcher.jpg" />-->
+        <!--<div class="container">-->
+        <!--<p id="chat-element" title="CatcherPost">Catcher on the Rye : A bullshit book about a brat who wants to be James Dean</p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="grid-item">
+            <!--<p id="description-element">{{post.description}}</p>-->
+            <div>
+                <img ng-if={{post.category.name=='music'}} src="{{post.album.image[0].imageUrl}}"/>
+                <img ng-if={{post.category.name=='movies'}} src="{{post.results[0].poster_path}}"/>
+                <img ng-if={{post.category.name=='books'}} src="{{post.items[0].volumeInfo.imageLinks.thumbnail}}"/>
+            </div>
 
-		<div ng-repeat="post in posts" >
-            <!--<div class="grid-item">-->
-                <!--<img src="test/catcher.jpg" />-->
-                <!--<div class="container">-->
-                    <!--<p id="chat-element" title="CatcherPost">Catcher on the Rye : A bullshit book about a brat who wants to be James Dean</p>-->
-                <!--</div>-->
-            <!--</div>-->
-			<div class="grid-item">
-				<!--<p id="description-element">{{post.description}}</p>-->
-                <div >
-                    <img  ng-if={{post.category.name=='music'}} src="{{post.album.image[0].imageUrl}}"/>
-                    <img  ng-if={{post.category.name=='movies'}} src="{{post.results[0].poster_path}}"/>
-					<img ng-if={{post.category.name=='books'}} src="{{post.items[0].volumeInfo.imageLinks.thumbnail}}"/>
-                </div>
+            <div class="container">
+                <p ng-if={{post.category.name=='music'}} id="{{post.id}}" title="{{post.album.name}}" nop>{{post.album.name}} by {{post.album.artist}}</p>
+                <p ng-if={{post.category.name=='movies'}} id="{{post.id}}" title="{{post.results[0].original_title}}" nop>
+                    {{post.results[0].original_title}}</p>
+                <p ng-if={{post.category.name=='books'}} id="{{post.id}}" title="{{post.items[0].volumeInfo.title}}" nop>{{post.items[0].volumeInfo.title}}
+                    by {{post.items[0].volumeInfo.authors[0]}}</p>
 
-				<div class="container" >
-					<p  ng-if={{post.category.name=='music'}} id="{{post.id}}" title="{{post.album.name}}" nop>{{post.album.name}} by {{post.album.artist}}</p>
-					<p ng-if={{post.category.name=='movies'}} id="{{post.id}}" title="{{post.results[0].original_title}}" nop>
-						{{post.results[0].original_title}}</p>
-					<p ng-if={{post.category.name=='books'}} id="{{post.id}}" title="{{post.items[0].volumeInfo.title}}" nop>{{post.items[0].volumeInfo.title}}
-						by {{post.items[0].volumeInfo.authors[0]}}</p>
-
-				</div>
-			</div>
-		</div>
-	<!--</div>-->
+            </div>
+        </div>
+    </div>
+    <!--</div>-->
 </div>
-
-
 
 
 <!--<div class="grid-item">-->
@@ -249,7 +247,6 @@
 
 
 <!--</div>-->
-
 
 
 </body>

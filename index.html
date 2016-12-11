@@ -5,19 +5,20 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata:700" rel="stylesheet">
 
 
 	<style type="text/css">
-		body{
+		body {
 			background-image: url("mutiny.jpg");
 			background-repeat: no-repeat;
 			background-size: cover;
 			font-family: 'Inconsolata', monospace;
 		}
 
-		.footer{
+		.footer {
 			position: fixed;
 			bottom: 0;
 			margin-bottom: 50px;
@@ -31,17 +32,18 @@
 				var password = $('#password').val();
 				var username = $('#username').val();
 
-				document.cookie="username="+username;
+				document.cookie = "username=" + username;
 
 				console.log(password);
 				console.log(username);
 				console.log('asfasfgh');
 
-				window.location.href="categories.html";
+				window.location.href = "categories.html";
 			});
 		});
 	</script>
 </head>
+
 <body>
 
 <script>
@@ -133,16 +135,13 @@
 						success: function (responseData, textStatus, jqXHR) {
 							// save username to cookie
 							document.cookie = "username=" + responseData.username;
-
 							// redirect to categories
-							window.location = '/categories.html';
+							window.location.href = "categories.html";
 						},
 						error: function (responseData, textStatus, errorThrown) {
 							alert('POST failed.');
 						}
 					});
-
-
 				}
 		);
 	}
@@ -152,16 +151,14 @@
 <div class="row">
 	<div class="col-md-12 text-center footer">
 		<h4>This is the place where colours happen, login with : </h4>
+
+		<input id="username" style="border-radius: 5px" type="text" name="username" placeholder="username"> <br>
+		<input id="password" style="border-radius: 5px; margin-top: 14px;" name="password" placeholder="password" type="password"> <br>
+		<input id="login_button" style="border-radius: 5px; margin-top: 14px;" type="button" value="Go!">
+
 		<div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true"
-			 onlogin="checkLoginState()"></div>
-
-		<!--<a href="http://10.16.4.153:8080/login"><img src="Facebook.png"></a>-->
-
-
-
-			<input id="username" style="border-radius: 5px" type="text" name="username" placeholder="username"> <br>
-			<input id="password" style="border-radius: 5px; margin-top: 14px;" name="password" placeholder="password" type="password"> <br>
-			<input id="login_button" style="border-radius: 5px; margin-top: 14px;" type="button" value="Go!">
+			 onlogin="checkLoginState()">
+		</div>
 
 		<!--<a href="http://10.16.4.153:8080/login"><img src="Facebook.png"></a>-->
 
@@ -170,7 +167,6 @@
 		<!--<img src="Google.png">-->
 	</div>
 </div>
-
 
 </body>
 </html>
